@@ -38,3 +38,7 @@ sendLineBtn.grid(row=2, column=0, padx=10, pady=10)
 
 def recvLine():
 	#recieves a line from the server
+    while True:
+        serverLine = clientSocket.recv(1024).decode("utf-8")
+        print(serverLine)
+        fullPoem.insert(END, "\n"+serverLine)
