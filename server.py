@@ -2,7 +2,7 @@ from socket import *
 from tkinter import *
 from threading import *
 
-
+clients = []
 
 def clientThread()
 	#takes care of most things
