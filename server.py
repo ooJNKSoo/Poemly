@@ -15,3 +15,11 @@ hostSocket.bind((hostIp, portNumber))
 hostSocket.listen()
 hostSocket.listen()
 print ("Waiting for connection...")
+
+
+while True:
+    clientSocket, clientAddress = hostSocket.accept()
+    clients.append(clientSocket)
+    print ("Connection established with: ", clientAddress[0] + ":" + str(clientAddress[1]))   
+    thread = Thread(target=clientThread, args=(clientSocket, clientAddress, ))
+    thread.start()
