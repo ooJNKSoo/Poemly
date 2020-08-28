@@ -2,8 +2,23 @@ from socket import *
 from tkinter import *
 from threading import *
 
+
+
 def clientThread()
 	#takes care of most things
+	 while True:
+        line = clients[i].recv(1024).decode("utf-8")
+        print(clientAddress[0] + ":" + str(clientAddress[1]) + " says: " + line)
+
+        for client in clients:
+            client.send(("added:     " + line).encode("utf-8"))
+
+        if not line:
+        clients.remove(clientSocket)
+        print(clientAddress[0] + ":" + str(clientAddress[1]) + " disconnected")
+        break
+    clientSocket.close()
+
 
 
 hostSocket = socket(AF_INET, SOCK_STREAM)
