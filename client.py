@@ -1,7 +1,6 @@
 from socket import *
-from tkinter import *
 from threading import *
-
+from tkinter import *
 
 clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
@@ -25,11 +24,13 @@ yourPoemLine.grid(row=1, column=0, padx=10, pady=10)
 
 
 def sendLine():
-	#sends a line to the server
-	poemLine = yourPoemLine.get()
+    global  canSend
+    if canSend == 1:
+        poemLine = yourPoemLine.get()
 
         yourPoemLine.delete("0",END)
         clientSocket.send(poemLine.encode("utf-8"))
+        canSend = 0
 
 
 sendLineBtn = Button(window, text="Add to Poem", width=20, command=sendLine)
@@ -37,8 +38,20 @@ sendLineBtn.grid(row=2, column=0, padx=10, pady=10)
 
 
 def recvLine():
-	#recieves a line from the server
+    global canSend
     while True:
         serverLine = clientSocket.recv(1024).decode("utf-8")
-        print(serverLine)
-        fullPoem.insert(END, "\n"+serverLine)
+        if serverLine == "0110011101101111":
+            canSend = 1
+            fullPoem.insert(END, "\n" + "Your turn")
+
+        else:
+            print(serverLine)
+            fullPoem.insert(END, "\n"+serverLine)
+
+
+recvThread = Thread(target=recvLine)
+recvThread.daemon = True
+recvThread.start()
+
+window.mainloop()
